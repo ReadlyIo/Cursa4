@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище megorovModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="OrderMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="StartTime" Type="date" />
+    <Property Name="EndTime" Type="date" />
+    <Property Name="Balance" Type="money" />
+    <Property Name="ServiceId" Type="int" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="Number" Type="int" />
+  </EntityType>
+  <EntityType Name="ServiceMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Price" Type="money" />
+    <Property Name="Count" Type="int" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="photo" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="BirthDate" Type="date" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_OrderMark_ServiceMark">
+    <End Role="ServiceMark" Type="Self.ServiceMark" Multiplicity="0..1" />
+    <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceMark">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderMark">
+        <PropertyRef Name="ServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderMark_UserMark">
+    <End Role="UserMark" Type="Self.UserMark" Multiplicity="0..1" />
+    <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserMark">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderMark">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище megorovModelContainer">
+    <EntitySet Name="OrderMark" EntityType="Self.OrderMark" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ServiceMark" EntityType="Self.ServiceMark" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMark" EntityType="Self.UserMark" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_OrderMark_ServiceMark" Association="Self.FK_OrderMark_ServiceMark">
+      <End Role="ServiceMark" EntitySet="ServiceMark" />
+      <End Role="OrderMark" EntitySet="OrderMark" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderMark_UserMark" Association="Self.FK_OrderMark_UserMark">
+      <End Role="UserMark" EntitySet="UserMark" />
+      <End Role="OrderMark" EntitySet="OrderMark" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

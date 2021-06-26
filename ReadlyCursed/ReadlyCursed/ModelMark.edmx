@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище megorovModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="OrderMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="StartTime" Type="date" />
+          <Property Name="EndTime" Type="date" />
+          <Property Name="Balance" Type="money" />
+          <Property Name="ServiceId" Type="int" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Number" Type="int" />
+        </EntityType>
+        <EntityType Name="ServiceMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="money" />
+          <Property Name="Count" Type="int" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="photo" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_OrderMark_ServiceMark">
+          <End Role="ServiceMark" Type="Self.ServiceMark" Multiplicity="0..1" />
+          <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceMark">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderMark">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderMark_UserMark">
+          <End Role="UserMark" Type="Self.UserMark" Multiplicity="0..1" />
+          <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMark">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderMark">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище megorovModelContainer">
+          <EntitySet Name="OrderMark" EntityType="Self.OrderMark" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceMark" EntityType="Self.ServiceMark" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMark" EntityType="Self.UserMark" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_OrderMark_ServiceMark" Association="Self.FK_OrderMark_ServiceMark">
+            <End Role="ServiceMark" EntitySet="ServiceMark" />
+            <End Role="OrderMark" EntitySet="OrderMark" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderMark_UserMark" Association="Self.FK_OrderMark_UserMark">
+            <End Role="UserMark" EntitySet="UserMark" />
+            <End Role="OrderMark" EntitySet="OrderMark" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="megorovModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="OrderMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="StartTime" Type="DateTime" Precision="0" />
+          <Property Name="EndTime" Type="DateTime" Precision="0" />
+          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ServiceId" Type="Int32" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Number" Type="Int32" />
+          <NavigationProperty Name="ServiceMark" Relationship="Self.FK_OrderMark_ServiceMark" FromRole="OrderMark" ToRole="ServiceMark" />
+          <NavigationProperty Name="UserMark" Relationship="Self.FK_OrderMark_UserMark" FromRole="OrderMark" ToRole="UserMark" />
+        </EntityType>
+        <EntityType Name="ServiceMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Count" Type="Int32" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrderMark" Relationship="Self.FK_OrderMark_ServiceMark" FromRole="ServiceMark" ToRole="OrderMark" />
+        </EntityType>
+        <EntityType Name="UserMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="OrderMark" Relationship="Self.FK_OrderMark_UserMark" FromRole="UserMark" ToRole="OrderMark" />
+        </EntityType>
+        <Association Name="FK_OrderMark_ServiceMark">
+          <End Role="ServiceMark" Type="Self.ServiceMark" Multiplicity="0..1" />
+          <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceMark">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderMark">
+              <PropertyRef Name="ServiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderMark_UserMark">
+          <End Role="UserMark" Type="Self.UserMark" Multiplicity="0..1" />
+          <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserMark">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderMark">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="megorovEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OrderMark" EntityType="Self.OrderMark" />
+          <EntitySet Name="ServiceMark" EntityType="Self.ServiceMark" />
+          <EntitySet Name="UserMark" EntityType="Self.UserMark" />
+          <AssociationSet Name="FK_OrderMark_ServiceMark" Association="Self.FK_OrderMark_ServiceMark">
+            <End Role="ServiceMark" EntitySet="ServiceMark" />
+            <End Role="OrderMark" EntitySet="OrderMark" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderMark_UserMark" Association="Self.FK_OrderMark_UserMark">
+            <End Role="UserMark" EntitySet="UserMark" />
+            <End Role="OrderMark" EntitySet="OrderMark" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище megorovModelContainer" CdmEntityContainer="megorovEntities">
+          <EntitySetMapping Name="OrderMark">
+            <EntityTypeMapping TypeName="megorovModel.OrderMark">
+              <MappingFragment StoreEntitySet="OrderMark">
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceMark">
+            <EntityTypeMapping TypeName="megorovModel.ServiceMark">
+              <MappingFragment StoreEntitySet="ServiceMark">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMark">
+            <EntityTypeMapping TypeName="megorovModel.UserMark">
+              <MappingFragment StoreEntitySet="UserMark">
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

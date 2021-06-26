@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="megorovModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="OrderMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="StartTime" Type="DateTime" Precision="0" />
+    <Property Name="EndTime" Type="DateTime" Precision="0" />
+    <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ServiceId" Type="Int32" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="Number" Type="Int32" />
+    <NavigationProperty Name="ServiceMark" Relationship="Self.FK_OrderMark_ServiceMark" FromRole="OrderMark" ToRole="ServiceMark" />
+    <NavigationProperty Name="UserMark" Relationship="Self.FK_OrderMark_UserMark" FromRole="OrderMark" ToRole="UserMark" />
+  </EntityType>
+  <EntityType Name="ServiceMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Count" Type="Int32" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="OrderMark" Relationship="Self.FK_OrderMark_ServiceMark" FromRole="ServiceMark" ToRole="OrderMark" />
+  </EntityType>
+  <EntityType Name="UserMark">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="0" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="OrderMark" Relationship="Self.FK_OrderMark_UserMark" FromRole="UserMark" ToRole="OrderMark" />
+  </EntityType>
+  <Association Name="FK_OrderMark_ServiceMark">
+    <End Role="ServiceMark" Type="Self.ServiceMark" Multiplicity="0..1" />
+    <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceMark">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderMark">
+        <PropertyRef Name="ServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderMark_UserMark">
+    <End Role="UserMark" Type="Self.UserMark" Multiplicity="0..1" />
+    <End Role="OrderMark" Type="Self.OrderMark" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserMark">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderMark">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="megorovEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="OrderMark" EntityType="Self.OrderMark" />
+    <EntitySet Name="ServiceMark" EntityType="Self.ServiceMark" />
+    <EntitySet Name="UserMark" EntityType="Self.UserMark" />
+    <AssociationSet Name="FK_OrderMark_ServiceMark" Association="Self.FK_OrderMark_ServiceMark">
+      <End Role="ServiceMark" EntitySet="ServiceMark" />
+      <End Role="OrderMark" EntitySet="OrderMark" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderMark_UserMark" Association="Self.FK_OrderMark_UserMark">
+      <End Role="UserMark" EntitySet="UserMark" />
+      <End Role="OrderMark" EntitySet="OrderMark" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
