@@ -65,26 +65,27 @@ https://github.com/ReadlyLier/Cursa4.git
 #### Пример кода разметки страницы:
 ```xml
 
-<Window x:Class="KArina_Fitness.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Window x:Class="ReadlyCursed.MainWindow"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KArina_Fitness"
+        xmlns:local="clr-namespace:ReadlyCursed"
         mc:Ignorable="d"
-        Title="Фитнес-центр" Height="450" Width="800">
+        Title="Автосервис" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="105"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <Image 
-        Margin="5"
-        Source="./logo/1.png" 
-        VerticalAlignment="Top"/>
+        Margin="5,5,5,0"
+        Source="./logo/auto.png" 
+        VerticalAlignment="Top" Grid.ColumnSpan="2"/>
 
-        <StackPanel  Orientation="Vertical" VerticalAlignment="Bottom">
+        <StackPanel  Orientation="Vertical" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
             <Button 
                 Margin="5"
                 Content="Добавление" 
@@ -102,7 +103,7 @@ https://github.com/ReadlyLier/Cursa4.git
         </StackPanel>
 
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
@@ -222,7 +223,7 @@ https://github.com/ReadlyLier/Cursa4.git
                                             Text=" | кол-во "/>
                                         <TextBlock 
                                             Text="{Binding Count}"/>
-                                        
+
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -243,6 +244,7 @@ https://github.com/ReadlyLier/Cursa4.git
         </Grid>
     </Grid>
 </Window>
+
 
     
 
@@ -267,10 +269,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KArina_Fitness
+namespace ReadlyCursed
 {
 
-    public partial class ServiceKarina
+    public partial class ServiceMark
     {
         // ссылка на картинку
         // по ТЗ, если картинка не найдена, то должна выводиться картинка по-умолчанию
@@ -322,11 +324,11 @@ namespace KArina_Fitness
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        private List<ServiceKarina> _ServiceList;
+        private List<ServiceMark> _ServiceList;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public List<ServiceKarina> ServiceList
+        public List<ServiceMark> ServiceList
         {
             get
             {
@@ -364,7 +366,7 @@ namespace KArina_Fitness
         {
             InitializeComponent();
             DataContext = this;
-            ServiceList = Core.DB.ServiceKarina.ToList();
+            ServiceList = Core.DB.ServiceMark.ToList();
         }
 
         private Boolean _SortPriceAscending = true;
@@ -479,11 +481,11 @@ namespace KArina_Fitness
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var Ord = new ServiceKarina();
+            var Ord = new ServiceMark();
             var NewOrdWind = new CreateWindow(Ord);
             if ((bool)NewOrdWind.ShowDialog())
             {
-                ServiceList = Core.DB.ServiceKarina.ToList();
+                ServiceList = Core.DB.ServiceMark.ToList();
                 PropertyChanged(this, new PropertyChangedEventArgs("ServiceList"));
                 PropertyChanged(this, new PropertyChangedEventArgs("FilteredServiceCount"));
                 PropertyChanged(this, new PropertyChangedEventArgs("ServiceCount"));
@@ -499,21 +501,21 @@ namespace KArina_Fitness
 
         private void DelOrd_Click(object sender, RoutedEventArgs e)
         {
-            var item = ProductListView.SelectedItem as ServiceKarina;
+            var item = ProductListView.SelectedItem as ServiceMark;
             if (item == null)
             {
                 MessageBox.Show("Не выбрана услуга");
                 return;
             }
-            Core.DB.ServiceKarina.Remove(item);
+            Core.DB.ServiceMark.Remove(item);
             Core.DB.SaveChanges();
-            ServiceList = Core.DB.ServiceKarina.ToList();
+            ServiceList = Core.DB.ServiceMark.ToList();
         }
 
 
         private void EditOrder_Click(object sender, RoutedEventArgs e)
         {
-            var SelectedOrder = ProductListView.SelectedItem as ServiceKarina;
+            var SelectedOrder = ProductListView.SelectedItem as ServiceMark;
             if (SelectedOrder == null)
             {
                 MessageBox.Show("Не выбрана услуга");
@@ -530,9 +532,6 @@ namespace KArina_Fitness
     }
 }
 
-
-
-
 ```
 
 ### Окно добавления и редактирования заказов:
@@ -540,12 +539,12 @@ namespace KArina_Fitness
 #### Прмер кода разметки страницы редактирования заказов:
 ```xml
     
-<Window x:Class="KArina_Fitness.CreateWindow"
+<Window x:Class="ReadlyCursed.CreateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KArina_Fitness"
+        xmlns:local="clr-namespace:ReadlyCursed"
         mc:Ignorable="d"
         Title="{Binding WindowName}" Height="450" Width="800">
     <Grid>
@@ -570,7 +569,7 @@ namespace KArina_Fitness
                 </Grid.RowDefinitions>
 
                 <StackPanel Margin="25" Grid.Row="0" Orientation="Vertical">
-                    <Label  Content="Наименование товара"/>
+                    <Label  Content="Наименование услуги"/>
                     <TextBox  Text="{Binding CurrentService.Title}"/>
                     <Label Content="Количество"/>
                     <TextBox  Text="{Binding CurrentService.Count}"/>
@@ -578,12 +577,12 @@ namespace KArina_Fitness
                     <TextBox  Text="{Binding CurrentService.Price}"/>
                 </StackPanel>
             </Grid>
-            <Button Content="Картинка" Margin="7"  Click="GetImageButton_Click"></Button>
-            <Button Content="Сохранить" Margin="7" Click="SaveButton_Click"></Button>
+            <Button Content="Выберите файл изображения" Margin="7" Click="GetImageButton_Click"></Button>
+            <Button Content="Сохранить" Margin="7"  Click="SaveButton_Click"></Button>
         </StackPanel>
     </Grid>
 </Window>
- 
+
 
 ```
 #### Пример Логики страницы редактирования заказов:
@@ -606,16 +605,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace KArina_Fitness
+namespace ReadlyCursed
 {
     /// <summary>
     /// Логика взаимодействия для CreateWindow.xaml
     /// </summary>
     public partial class CreateWindow : Window, INotifyPropertyChanged
     {
-        public List<UserKarina> WorkList { get; set; }
+        public List<UserMark> WorkList { get; set; }
 
-        public ServiceKarina CurrentService { get; set; }
+        public ServiceMark CurrentService { get; set; }
 
         public string WindowName
         {
@@ -625,12 +624,12 @@ namespace KArina_Fitness
             }
         }
 
-        public CreateWindow(ServiceKarina service)
+        public CreateWindow(ServiceMark service)
         {
             InitializeComponent();
             this.DataContext = this;
             CurrentService = service;
-            WorkList = Core.DB.UserKarina.ToList();
+            WorkList = Core.DB.UserMark.ToList();
         }
         private void GetImageButton_Click(object sender, RoutedEventArgs e)
         {
@@ -663,7 +662,7 @@ namespace KArina_Fitness
 
             // если запись новая, то добавляем ее в список
             if (CurrentService.Id == 0)
-                Core.DB.ServiceKarina.Add(CurrentService);
+                Core.DB.ServiceMark.Add(CurrentService);
 
             // сохранение в БД
             try
@@ -681,44 +680,6 @@ namespace KArina_Fitness
     }
 }
 
-```
-# Тестировние
-## Создание библиотеки классов и Юнит тестов
-### Библиотека классов
-```cs
-
-namespace Library
-{
-    public class Analytics
-    {
-
-        public Boolean CheckPrice(int price)
-        {
-            if (price <= 1500)
-            {
-                return false;
-            }
-            else
-                return true;
-        }
-
-        public int DiscountPrice(int price)
-        {
-            int sum = ((price / 100)*15) * price;
-            return sum;
-        }
-
-        public string PriceNotNull(int price)
-        {
-            if (price <= 0)
-            {
-                return "Цена не может быть меньше или равна нулю!!!";
-            }
-            else 
-                return "Всё правильно";
-        }
-    }
-}
 
 ```
 ### Юнит тесты 
